@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: finance-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: finance_db
+      POSTGRES_USER: finance_admin
+      POSTGRES_PASSWORD: super_secret_password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - finance-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: finance-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    networks:
+      - finance-network
+
+volumes:
+  pgdata:
+  redisdata:
+
+networks:
+  finance-network:
+    driver: bridge
