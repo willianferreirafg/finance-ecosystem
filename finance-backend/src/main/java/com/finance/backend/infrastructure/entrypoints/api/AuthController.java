@@ -2,8 +2,10 @@ package com.finance.backend.infrastructure.entrypoints.api;
 
 import com.finance.backend.core.usecases.AuthenticateUserUseCase;
 import com.finance.backend.core.usecases.RefreshTokenUseCase;
+import com.finance.backend.core.usecases.RegisterUserUseCase;
 import com.finance.backend.infrastructure.entrypoints.dto.AuthDto;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,9 +20,12 @@ public class AuthController {
 
     private final RefreshTokenUseCase refreshTokenUseCase;
 
-    public AuthController(AuthenticateUserUseCase authenticateUserUseCase, RefreshTokenUseCase refreshTokenUseCase) {
+    private final RegisterUserUseCase registerUserUseCase;
+
+    public AuthController(AuthenticateUserUseCase authenticateUserUseCase, RefreshTokenUseCase refreshTokenUseCase, RegisterUserUseCase registerUserUseCase) {
         this.authenticateUserUseCase = authenticateUserUseCase;
         this.refreshTokenUseCase = refreshTokenUseCase;
+        this.registerUserUseCase = registerUserUseCase;
     }
 
     @PostMapping("/login")
@@ -49,5 +54,11 @@ public class AuthController {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Void> register(@RequestBody AuthDto.RegisterRequest request) {
+        registerUserUseCase.execute(request.name(), request.email(), request.password());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

@@ -1,5 +1,6 @@
 package com.finance.backend.core.usecases;
 
+import com.finance.backend.core.domain.exceptions.InvalidCredentialsException;
 import com.finance.backend.core.domain.model.User;
 import java.time.Instant;
 import java.util.UUID;
@@ -21,10 +22,10 @@ public class AuthenticateUserUseCaseImpl implements AuthenticateUserUseCase {
     @Override
     public AuthenticationResult execute(String email, String rawPassword) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Credenciais inválidas"));
+                .orElseThrow(InvalidCredentialsException::new);
 
         if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
-            throw new RuntimeException("Credenciais inválidas");
+            throw new InvalidCredentialsException();
         }
 
         String accessToken = tokenService.generateAccessToken(user.getEmail());

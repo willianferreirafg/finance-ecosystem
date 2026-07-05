@@ -28,20 +28,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
+        System.out.println("➡️ [DEBUG SECURITY] Passando pela URL: " + request.getRequestURI() + " | Método: " + request.getMethod());
+
         try {
             String jwt = getJwtFromRequest(request);
-
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 String email = tokenProvider.getEmailFromJwt(jwt);
-
-                var authentication = new UsernamePasswordAuthenticationToken(
-                        email, null, Collections.emptyList());
-
+                var authentication = new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception ex) {
-            logger.error("Não foi possível definir a autenticação do usuário no contexto de segurança", ex);
+            System.out.println("❌ [DEBUG SECURITY] Erro no filtro: " + ex.getMessage());
         }
 
         filterChain.doFilter(request, response);
@@ -54,4 +53,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         return null;
     }
+
+
 }

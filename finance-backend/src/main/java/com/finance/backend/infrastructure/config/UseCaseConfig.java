@@ -21,4 +21,9 @@ public class UseCaseConfig {
     public RefreshTokenUseCase refreshTokenUseCase(TokenServicePort tokenService) {
         return new RefreshTokenUseCaseImpl(tokenService);
     }
+
+    @Bean
+    public RegisterUserUseCase registerUserUseCase(UserRepositoryPort userRepository, PasswordEncoderPort passwordEncoder) {
+        return new RegisterUserUseCaseImpl(userRepository, passwordEncoder);
+    }
 }

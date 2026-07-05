@@ -18,4 +18,10 @@ public class AuthDto {
     ) {}
 
     public record RefreshRequest(@NotBlank String refreshToken) {}
+
+    public record RegisterRequest(
+            String name,
+            String email,
+            String password
+    ) {}
 }

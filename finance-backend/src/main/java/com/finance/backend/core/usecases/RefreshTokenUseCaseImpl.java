@@ -1,5 +1,7 @@
 package com.finance.backend.core.usecases;
 
+import com.finance.backend.core.domain.exceptions.InvalidTokenException;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -14,7 +16,7 @@ public class RefreshTokenUseCaseImpl implements RefreshTokenUseCase {
     @Override
     public AuthenticateUserUseCase.AuthenticationResult execute(String refreshToken) {
         String email = tokenService.validateAndRotateRefreshToken(refreshToken)
-                .orElseThrow(() -> new RuntimeException("Refresh Token inválido ou expirado"));
+                .orElseThrow(() -> new InvalidTokenException("Refresh Token inválido, expirado ou já utilizado."));
 
         // Gera o novo par de chaves (Rotação Completa)
         String newAccessToken = tokenService.generateAccessToken(email);
