@@ -16,4 +16,6 @@ public class AuthDto {
             String tokenType,
             Instant expiresAt
     ) {}
+
+    public record RefreshRequest(@NotBlank String refreshToken) {}
 }

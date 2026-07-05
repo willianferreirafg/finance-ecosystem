@@ -5,6 +5,7 @@ import com.finance.backend.infrastructure.database.entities.RefreshTokenEntity;
 import com.finance.backend.infrastructure.database.repositories.RefreshTokenRedisRepository;
 import org.springframework.stereotype.Service;
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 public class TokenServiceAdapter implements TokenServicePort {
@@ -33,5 +34,26 @@ public class TokenServiceAdapter implements TokenServicePort {
 
         var entity = new RefreshTokenEntity(token, email, expiresAt, false);
         redisRepository.save(entity);
+    }
+
+    @Override
+    public Optional<String> validateAndRotateRefreshToken(String refreshToken) {
+        var tokenOpt = redisRepository.findByToken(refreshToken);
+
+        if (tokenOpt.isEmpty()) {
+            return Optional.empty(); // Token não existe ou já foi usado/revogado (Alerta de fraude!)
+        }
+
+        RefreshTokenEntity tokenEntity = tokenOpt.get();
+
+        if (tokenEntity.expiryDate().isBefore(Instant.now())) {
+            redisRepository.delete(tokenEntity);
+            return Optional.empty(); // Token expirado
+        }
+
+        // Rotação: Remove o token antigo usado para prevenir Replay Attacks
+        redisRepository.delete(tokenEntity);
+
+        return Optional.of(tokenEntity.userEmail());
     }
 }
