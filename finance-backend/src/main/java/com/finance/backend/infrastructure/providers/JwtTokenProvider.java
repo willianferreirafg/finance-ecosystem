@@ -9,7 +9,7 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    // Gera uma chave segura adequada para o algoritmo HMAC-SHA padrão
+    // gera uma chave segura adequada para o algoritmo HMAC-SHA padrão
     private final SecretKey key = Jwts.SIG.HS256.key().build();
     private final long jwtExpirationInMs = 900000; // 15 Minutos
 
@@ -21,16 +21,16 @@ public class JwtTokenProvider {
                 .subject(email)
                 .issuedAt(now)
                 .expiration(expiryDate)
-                .signWith(key) // Assina diretamente com a SecretKey estável
+                .signWith(key)
                 .compact();
     }
 
     public String getEmailFromJwt(String token) {
         return Jwts.parser()
-                .verifyWith(key) // Substitui o antigo setSigningKey
+                .verifyWith(key)
                 .build()
-                .parseSignedClaims(token) // Substitui o parseClaimsJws
-                .getPayload() // Substitui o getBody
+                .parseSignedClaims(token)
+                .getPayload()
                 .getSubject();
     }
 
@@ -42,7 +42,6 @@ public class JwtTokenProvider {
                     .parseSignedClaims(authToken);
             return true;
         } catch (Exception ex) {
-            // Em produção sênior, capturaríamos exceções específicas (ExpiredJwtException, MalformedJwtException)
             return false;
         }
     }
