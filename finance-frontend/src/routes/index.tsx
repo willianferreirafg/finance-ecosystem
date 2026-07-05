@@ -2,10 +2,10 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { PublicRoutes, PrivateRoutes } from './CustomRoutes';
 import { useAuth } from '../contexts/AuthContext';
+import { Login } from '../pages/Login';
+import { Register } from '../pages/Register';
 
-// Placeholders temporários para o app não quebrar até criarmos os arquivos visuais
-const LoginPlaceholder = () => <div className="p-8 text-white bg-zinc-900 min-h-screen">Tela de Login (Pública)</div>;
-const RegisterPlaceholder = () => <div className="p-8 text-white bg-zinc-900 min-h-screen">Tela de Cadastro (Pública)</div>;
+
 const DashboardPlaceholder = () => {
   const { signOut, user } = useAuth();
   return (
@@ -23,18 +23,16 @@ export const AppRoutes: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Grupo de Rotas Públicas */}
         <Route element={<PublicRoutes />}>
-          <Route path="/login" element={<LoginPlaceholder />} />
-          <Route path="/register" element={<RegisterPlaceholder />} />
+          {/* Usa o componente <Login /> aqui */}
+          <Route path="/login" element={<Login />} /> 
+          <Route path="/register" element={<Register />} />
         </Route>
 
-        {/* Grupo de Rotas Privadas/Protegidas */}
         <Route element={<PrivateRoutes />}>
           <Route path="/dashboard" element={<DashboardPlaceholder />} />
         </Route>
 
-        {/* Fallback global: qualquer rota desconhecida manda para o Dashboard (que decide se vai pro login ou não) */}
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>

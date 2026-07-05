@@ -59,7 +59,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Método de Login integrado ao nosso back-end
   async function signIn({ email, password }: any) {
-    setLoading(true);
     try {
       const response = await api.post('/auth/login', { email, password });
       
@@ -75,23 +74,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         email: userResponse.data.email,
         role: userResponse.data.role
       });
-    } catch (error) {
+    } catch (err:any) {
       setUser(null);
-      throw error; // Repassa o erro para ser tratado visualmente no formulário da página
-    } finally {
-      setLoading(false);
+
+      throw new Error(
+        err.response?.data?.message ?? "Credenciais inválidas."
+      );
     }
   }
 
   // Método de Registro integrado ao nosso back-end
   async function signUp({ name, email, password }: any) {
-    setLoading(true);
     try {
       await api.post('/auth/register', { name, email, password });
-    } catch (error) {
+    } catch (error: any) {
+
+      if (error.response && error.response.data) {
+        throw error.response.data;
+      }
+
       throw error;
-    } finally {
-      setLoading(false);
     }
   }
 
