@@ -13,8 +13,11 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.2",
+    "axios": "^1.18.1",
+    "lucide-react": "^1.23.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-router-dom": "^7.18.1",
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
@@ -22,6 +25,7 @@
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^6.0.3",
     "concurrently": "^10.0.3",
     "electron": "^43.0.0",
