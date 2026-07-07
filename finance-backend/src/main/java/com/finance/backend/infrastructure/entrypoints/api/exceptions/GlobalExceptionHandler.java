@@ -51,4 +51,15 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(response);
     }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(com.finance.backend.core.domain.exceptions.ResourceNotFoundException.class)
+    public ResponseEntity<Object> handleResourceNotFoundException(com.finance.backend.core.domain.exceptions.ResourceNotFoundException ex) {
+        var body = java.util.Map.of(
+                "timestamp", java.time.LocalDateTime.now(),
+                "status", HttpStatus.NOT_FOUND.value(),
+                "error", "Not Found",
+                "message", ex.getMessage()
+        );
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
 }
