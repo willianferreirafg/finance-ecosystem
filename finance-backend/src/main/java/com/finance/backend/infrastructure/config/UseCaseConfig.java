@@ -23,7 +23,16 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public RegisterUserUseCase registerUserUseCase(UserRepositoryPort userRepository, PasswordEncoderPort passwordEncoder) {
-        return new RegisterUserUseCaseImpl(userRepository, passwordEncoder);
+    public RegisterUserUseCase registerUserUseCase(UserRepositoryPort userRepository,
+                                                   PasswordEncoderPort passwordEncoder,
+                                                   CategoryRepositoryPort categoryRepository) {
+        return new RegisterUserUseCaseImpl(userRepository, passwordEncoder, categoryRepository);
+    }
+
+    @Bean
+    public CreateTransactionUseCase createTransactionUseCase(TransactionRepositoryPort transactionRepository,
+                                                             UserRepositoryPort userRepository,
+                                                             CategoryRepositoryPort categoryRepository) {
+        return new CreateTransactionUseCaseImpl(transactionRepository, userRepository, categoryRepository);
     }
 }
