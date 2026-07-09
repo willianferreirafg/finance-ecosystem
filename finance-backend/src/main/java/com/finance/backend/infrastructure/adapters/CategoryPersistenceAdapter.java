@@ -9,6 +9,7 @@ import com.finance.backend.infrastructure.database.repositories.SpringDataCatego
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Primary;
 
 import java.util.List;
 import java.util.UUID;
