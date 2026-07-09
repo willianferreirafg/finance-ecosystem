@@ -2,6 +2,16 @@ spring:
   application:
     name: finance-backend
 
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+    cache:
+      type: redis
+      redis:
+        time-to-live: 600000 # isso são 10 minutos (em milissegundos)
+        cache-null-values: false
+
   datasource:
     url: jdbc:postgresql://localhost:5432/finance_db
     username: finance_admin
