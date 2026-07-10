@@ -8,8 +8,12 @@ import com.finance.backend.infrastructure.database.entities.CategoryEntity;
 import com.finance.backend.infrastructure.database.entities.TransactionEntity;
 import com.finance.backend.infrastructure.database.entities.UserEntity;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class TransactionRepositoryAdapter implements TransactionRepositoryPort {
@@ -30,6 +34,15 @@ public class TransactionRepositoryAdapter implements TransactionRepositoryPort {
     @Override
     public Optional<Transaction> findById(UUID id) {
         return repository.findById(id).map(this::toDomain);
+    }
+
+    @Override
+    public List<Transaction> findByUserIdAndPeriod(UUID userId, LocalDate startDate, LocalDate endDate) {
+        List<TransactionEntity> entities = repository.findByUserIdAndDateBetween(userId, startDate, endDate);
+
+        return entities.stream()
+                .map(this::toDomain)
+                .collect(Collectors.toList());
     }
 
     private TransactionEntity toEntity(Transaction domain) {
