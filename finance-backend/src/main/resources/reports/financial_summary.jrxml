@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="financial_summary" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b1234567-1234-1234-1234-123456789abc">
+
+    <parameter name="REPORT_TITLE" class="java.lang.String"/>
+    <parameter name="START_DATE" class="java.lang.String"/>
+    <parameter name="END_DATE" class="java.lang.String"/>
+
+    <field name="description" class="java.lang.String"/>
+    <field name="amount" class="java.math.BigDecimal"/>
+
+    <title>
+        <band height="60">
+            <textField>
+                <reportElement x="0" y="0" width="555" height="30" uuid="e1234567-1234-1234-1234-123456789abc"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="18" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{REPORT_TITLE}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="0" y="35" width="555" height="20" uuid="f1234567-1234-1234-1234-123456789abc"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA["Período: " + $P{START_DATE} + " até " + $P{END_DATE}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <columnHeader>
+        <band height="25">
+            <staticText>
+                <reportElement x="0" y="0" width="380" height="20" uuid="a1234567-1234-1234-1234-123456789abc"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Descrição]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="380" y="0" width="175" height="20" uuid="c1234567-1234-1234-1234-123456789abc"/>
+                <textElement textAlignment="Right"><font isBold="true"/></textElement>
+                <text><![CDATA[Valor]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="20">
+            <textField>
+                <reportElement x="0" y="0" width="380" height="20" uuid="d1234567-1234-1234-1234-123456789abc"/>
+                <textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+            </textField>
+            <textField pattern="¤ #,##0.00">
+                <reportElement x="380" y="0" width="175" height="20" uuid="91234567-1234-1234-1234-123456789abc"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+</jasperReport>
