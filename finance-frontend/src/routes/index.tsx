@@ -4,6 +4,7 @@ import { PublicRoutes, PrivateRoutes } from './CustomRoutes';
 import { useAuth } from '../contexts/AuthContext';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
+import { Dashboard } from '../pages/Dashboard';
 
 
 const DashboardPlaceholder = () => {
@@ -30,7 +31,7 @@ export const AppRoutes: React.FC = () => {
         </Route>
 
         <Route element={<PrivateRoutes />}>
-          <Route path="/dashboard" element={<DashboardPlaceholder />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />

@@ -34,6 +34,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll() // Libera rotas de auth (login/cadastro)
                         .requestMatchers("/api/v1/health").permitAll()
+                        // Só para autenticados
+                        .requestMatchers("/api/v1/categories").authenticated()
+                        .requestMatchers("/api/v1/transactions").authenticated()
+                        .requestMatchers("/api/v1/reports").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -5,6 +5,7 @@ import com.finance.backend.core.usecases.UserRepositoryPort;
 import com.finance.backend.infrastructure.database.entities.UserEntity;
 import org.springframework.stereotype.Component;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class UserRepositoryAdapter implements UserRepositoryPort {
@@ -19,6 +20,12 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     public Optional<User> findByEmail(String email) {
         return repository.findByEmail(email)
                 .map(entity -> new User(entity.getId(), entity.getName(), entity.getEmail(), entity.getPassword(), entity.getCreatedAt()));
+    }
+
+    @Override
+    public Optional<UUID> findIdByEmail(String email) {
+        return repository.findByEmail(email)
+                .map(UserEntity::getId); // Extrai apenas o UUID da entidade encontrada
     }
 
     @Override
