@@ -9,6 +9,10 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record TransactionRequestDto(
+
+        @NotNull(message = "O ID da categoria é obrigatório.")
+        UUID categoryId,
+
         @NotBlank(message = "A descrição é obrigatória.")
         String description,
 
@@ -22,8 +26,5 @@ public record TransactionRequestDto(
         @NotNull(message = "O tipo da transação (REVENUE/EXPENSE) é obrigatório.")
         TransactionType type,
 
-        boolean paid,
-
-        @NotNull(message = "O ID da categoria é obrigatório.")
-        UUID categoryId
+        boolean paid
 ) {}
