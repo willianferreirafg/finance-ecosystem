@@ -3,37 +3,42 @@ import { useAuth } from '../contexts/AuthContext';
 import { transactionService } from '../services/transactionService';
 import { categoryService } from '../services/categoryService';
 import type { Transaction, Category, DashboardSummary } from '../services/types';
-import { ArrowUpCircle, ArrowDownCircle, DollarSign, LogOut, FileText } from 'lucide-react';
+import { ArrowUpCircle, ArrowDownCircle, DollarSign, LogOut, FileText, Plus } from 'lucide-react';
+import { TransactionModal } from '../components/TransactionModal'
+import { CategoryModal } from '../components/CategoryModal';
+
 
 export const Dashboard: React.FC = () => {
   const { signOut, user } = useAuth();
   const [loadingData, setLoadingData] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   
   // Ajustado o estado para aceitar DashboardSummary ou null para o mapeamento seguro
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
-  useEffect(() => {
-    async function fetchDashboardData() {
-      try {
-        setLoadingData(true);
-        const [summaryData, transactionsData, categoriesData] = await Promise.all([
-          transactionService.getSummary(),
-          transactionService.getAll(),
-          categoryService.getAll()
-        ]);
+  async function fetchDashboardData() {
+    try {
+      setLoadingData(true);
+      const [summaryData, transactionsData, categoriesData] = await Promise.all([
+        transactionService.getSummary(),
+        transactionService.getAll(),
+        categoryService.getAll()
+      ]);
 
-        setSummary(summaryData);
-        setTransactions(transactionsData);
-        setCategories(categoriesData);
-      } catch (error) {
-        console.error("Erro ao carregar dados do painel:", error);
-      } finally {
-        setLoadingData(false);
-      }
+      setSummary(summaryData);
+      setTransactions(transactionsData);
+      setCategories(categoriesData);
+    } catch (error) {
+      console.error("Erro ao carregar dados do painel:", error);
+    } finally {
+      setLoadingData(false);
     }
+  }
 
+  useEffect(() => {
     fetchDashboardData();
   }, []);
 
@@ -76,6 +81,9 @@ export const Dashboard: React.FC = () => {
           <p className="text-zinc-500 text-sm">Olá, {user?.email}</p>
         </div>
         <div className="flex gap-3">
+          <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-xl transition-colors cursor-pointer text-sm">
+            + Nova Transação
+          </button>
           <button onClick={handleExportPdf} className="flex items-center gap-2 px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-zinc-300 hover:bg-zinc-800 transition-colors cursor-pointer text-sm">
             <FileText size={16} /> Relatório PDF
           </button>
@@ -83,6 +91,7 @@ export const Dashboard: React.FC = () => {
             <LogOut size={16} /> Sair
           </button>
         </div>
+        
       </header>
 
       {/* Cards de Resumo */}
@@ -141,6 +150,10 @@ export const Dashboard: React.FC = () => {
         {/* Categorias */}
         <div className="bg-zinc-900 border border-zinc-800/80 p-6 rounded-2xl">
           <h3 className="font-semibold text-lg mb-4">Minhas Categorias</h3>
+          <button onClick={() => setIsCategoryModalOpen(true)} className="p-1.5 bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded-lg text-emerald-500 transition-colors cursor-pointer" title="Nova Categoria">
+            <Plus size={16} />
+          </button>
+
           <div className="grid grid-cols-2 gap-3">
             {categories.map(c => (
               <div key={c.id} className="flex items-center gap-3 p-3 bg-zinc-950 rounded-xl border border-zinc-800/50">
@@ -151,6 +164,21 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de Novas Transações */}
+      <TransactionModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        categories={categories}
+        onTransactionCreated={fetchDashboardData} 
+      />
+
+      {/* Modal de Novas Categorias */}
+      <CategoryModal 
+        isOpen={isCategoryModalOpen}
+        onClose={() => setIsCategoryModalOpen(false)}
+        onCategoryCreated={fetchDashboardData} // Recarrega os dados ao criar categoria
+      />
     </div>
   );
 };

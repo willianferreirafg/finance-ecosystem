@@ -13,7 +13,7 @@ public class UseCaseConfig {
             PasswordEncoderPort passwordEncoder,
             TokenServicePort tokenService) {
 
-        // O Spring vai resolver os parâmetros automaticamente usando os Adapters que criamos
+        // O Spring vai resolver os parâmetros automaticamente usando os Adapters que estão criados
         return new AuthenticateUserUseCaseImpl(userRepository, passwordEncoder, tokenService);
     }
 
@@ -34,5 +34,11 @@ public class UseCaseConfig {
                                                              UserRepositoryPort userRepository,
                                                              CategoryRepositoryPort categoryRepository) {
         return new CreateTransactionUseCaseImpl(transactionRepository, userRepository, categoryRepository);
+    }
+
+    @Bean
+    public CreateCategoryUseCase createCategoryUseCase(CategoryRepositoryPort categoryRepository,
+                                                       UserRepositoryPort userRepository) {
+        return new CreateCategoryUseCaseImpl(categoryRepository, userRepository);
     }
 }

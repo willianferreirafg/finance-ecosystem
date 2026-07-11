@@ -29,6 +29,18 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     }
 
     @Override
+    public Optional<User> findById(UUID id) {
+        return repository.findById(id)
+                .map(entity -> new User(
+                        entity.getId(),
+                        entity.getName(),
+                        entity.getEmail(),
+                        entity.getPassword(),
+                        entity.getCreatedAt()
+                ));
+    }
+
+    @Override
     public User save(User user) {
         // se o ID for nulo ou se o objetivo for sempre salvar um novo no cadastro,
         // deixar o JPA gerar o UUID nativamente.

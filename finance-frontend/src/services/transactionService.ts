@@ -19,5 +19,17 @@ export const transactionService = {
       responseType: 'blob' // Fundamental para processar binários de arquivos
     });
     return response.data;
+  },
+
+  async create(data: {
+    categoryId: string;
+    description: string;
+    amount: number;
+    date: string;
+    type: 'INCOME' | 'EXPENSE';
+    paid: boolean;
+  }): Promise<Transaction> {
+    const response = await api.post<Transaction>('/api/v1/transactions', data);
+    return response.data;
   }
 };

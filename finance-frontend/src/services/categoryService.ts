@@ -8,8 +8,8 @@ export const categoryService = {
     return response.data;
   },
 
-  async create(category: Omit<Category, 'id' | 'userId'>): Promise<Category> {
-    const response = await api.post<Category>('/categories', category);
+  async create(data: { name: string; icon: string }): Promise<Category> {
+    const response = await api.post<Category>('/categories', data);
     return response.data;
   }
 };
