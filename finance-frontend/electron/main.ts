@@ -10,17 +10,16 @@ function createWindow() {
     height: 800,
     minWidth: 1024,
     minHeight: 768,
+    icon: path.join(__dirname, 'assets/icon.ico'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'), // Criaremos a seguir
+      preload: path.join(__dirname, 'preload.js'),
     },
-    titleBarStyle: 'hidden', // Cria aquela barra de título moderna/customizada estilo macOS/Windows 11
-    trafficLightPosition: { x: 15, y: 15 }
   });
 
-  // Se estiver em desenvolvimento, carrega o servidor local do Vite.
-  // Se for produção, carrega o arquivo index.html buildado.
+  mainWindow.setMenu(null);
+
   const startURL = isDev 
     ? 'http://localhost:5173' 
     : `file://${path.join(__dirname, '../dist/index.html')}`;

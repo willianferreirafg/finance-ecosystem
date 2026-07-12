@@ -4,3 +4,14 @@
   --color-primary-brand: #0f172a;
   --color-accent-financial: #10b981;
 }
+
+.electron-drag-region {
+  -webkit-app-region: drag;
+}
+
+/* Garante que botões e inputs dentro da barra de título ainda recebam cliques */
+.electron-drag-region button,
+.electron-drag-region input,
+.electron-drag-region a {
+  -webkit-app-region: no-drag;
+}
