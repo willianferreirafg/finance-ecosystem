@@ -11,4 +11,5 @@ import java.util.UUID;
 @Repository
 public interface SpringDataTransactionRepository extends JpaRepository<TransactionEntity, UUID> {
     List<TransactionEntity> findByUserIdAndDateBetween(UUID userId, LocalDate startDate, LocalDate endDate);
+    List<TransactionEntity> findByUserId(UUID userId);
 }

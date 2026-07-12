@@ -128,7 +128,7 @@ export const Dashboard: React.FC = () => {
         {/* Lista de Transações */}
         <div className="lg:col-span-2 bg-zinc-900 border border-zinc-800/80 p-6 rounded-2xl">
           <h3 className="font-semibold text-lg mb-4">Últimas Transações</h3>
-          <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+          <div className="space-y-3 max-h-[100px] overflow-y-auto pr-2">
             {transactions.length === 0 ? (
               <p className="text-zinc-500 text-sm py-4">Nenhuma movimentação registrada.</p>
             ) : (
@@ -138,8 +138,8 @@ export const Dashboard: React.FC = () => {
                     <p className="text-sm font-medium">{t.description}</p>
                     <span className="text-xs text-zinc-500">{new Date(t.date).toLocaleDateString()}</span>
                   </div>
-                  <span className={`text-sm font-semibold ${t.type === 'INCOME' ? 'text-emerald-500' : 'text-rose-500'}`}>
-                    {t.type === 'INCOME' ? '+' : '-'} R$ {(t.amount ?? 0).toFixed(2)}
+                  <span className={`text-sm font-semibold ${t.type === 'REVENUE' ? 'text-emerald-500' : 'text-rose-500'}`}>
+                    {t.type === 'REVENUE' ? '+' : '-'} R$ {(t.amount ?? 0).toFixed(2)}
                   </span>
                 </div>
               ))

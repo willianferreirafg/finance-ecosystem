@@ -25,7 +25,6 @@ public class CategoryPersistenceAdapter implements CategoryRepositoryPort {
     }
 
     @Override
-    @Cacheable(value = "categories", key = "#userId")
     public List<Category> findByUserId(UUID userId) {
         return repository.findByUserId(userId).stream()
                 .map(entity -> Category.builder()
@@ -40,7 +39,6 @@ public class CategoryPersistenceAdapter implements CategoryRepositoryPort {
     }
 
     @Override
-    @CacheEvict(value = "categories", key = "#category.getUser().getId()")
     public Category save(Category category) {
         UserEntity userRef = new UserEntity();
         userRef.setId(category.getUser().getId());
@@ -79,7 +77,6 @@ public class CategoryPersistenceAdapter implements CategoryRepositoryPort {
     }
 
     @Override
-    @CacheEvict(value = "categories", allEntries = true)
     public void saveAll(List<Category> categories) {
         List<CategoryEntity> entities = categories.stream()
                 .map(category -> {

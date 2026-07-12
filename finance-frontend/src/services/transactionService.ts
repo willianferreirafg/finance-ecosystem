@@ -26,10 +26,10 @@ export const transactionService = {
     description: string;
     amount: number;
     date: string;
-    type: 'INCOME' | 'EXPENSE';
+    type: 'REVENUE' | 'EXPENSE';
     paid: boolean;
   }): Promise<Transaction> {
-    const response = await api.post<Transaction>('/api/v1/transactions', data);
+    const response = await api.post<Transaction>('/transactions', data);
     return response.data;
   }
 };

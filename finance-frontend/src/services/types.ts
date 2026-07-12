@@ -10,7 +10,7 @@ export interface Transaction {
   id: string;
   description: string;
   amount: number;
-  type: 'INCOME' | 'EXPENSE';
+  type: 'REVENUE' | 'EXPENSE';
   date: string;
   categoryId: string;
 }

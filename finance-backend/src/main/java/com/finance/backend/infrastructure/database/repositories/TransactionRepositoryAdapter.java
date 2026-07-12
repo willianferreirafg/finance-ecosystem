@@ -45,6 +45,13 @@ public class TransactionRepositoryAdapter implements TransactionRepositoryPort {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<Transaction> findByUserId(UUID userId) {
+        return repository.findByUserId(userId).stream()
+                .map(this::toDomain)
+                .collect(Collectors.toList());
+    }
+
     private TransactionEntity toEntity(Transaction domain) {
         if (domain == null) return null;
 

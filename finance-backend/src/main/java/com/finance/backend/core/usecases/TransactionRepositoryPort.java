@@ -11,4 +11,5 @@ public interface TransactionRepositoryPort {
     Transaction save(Transaction transaction);
     Optional<Transaction> findById(UUID id);
     List<Transaction> findByUserIdAndPeriod(UUID userId, LocalDate startDate, LocalDate endDate);
+    List<Transaction> findByUserId(UUID userId);
 }

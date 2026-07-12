@@ -41,4 +41,14 @@ public class UseCaseConfig {
                                                        UserRepositoryPort userRepository) {
         return new CreateCategoryUseCaseImpl(categoryRepository, userRepository);
     }
+
+    @Bean
+    public FetchTransactionsUseCase fetchTransactionsUseCase(TransactionRepositoryPort transactionRepository) {
+        return new FetchTransactionsUseCaseImpl(transactionRepository);
+    }
+
+    @Bean
+    public GetTransactionSummaryUseCase getTransactionSummaryUseCase(TransactionRepositoryPort transactionRepository) {
+        return new GetTransactionSummaryUseCaseImpl(transactionRepository);
+    }
 }

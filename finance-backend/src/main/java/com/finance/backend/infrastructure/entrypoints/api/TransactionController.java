@@ -2,6 +2,8 @@ package com.finance.backend.infrastructure.entrypoints.api;
 
 import com.finance.backend.core.domain.model.Transaction;
 import com.finance.backend.core.usecases.CreateTransactionUseCase;
+import com.finance.backend.core.usecases.FetchTransactionsUseCase;
+import com.finance.backend.core.usecases.GetTransactionSummaryUseCase;
 import com.finance.backend.infrastructure.entrypoints.dto.TransactionRequestDto;
 import com.finance.backend.infrastructure.entrypoints.dto.TransactionResponseDto;
 import com.finance.backend.infrastructure.entrypoints.dto.TransactionSummaryDto;
@@ -14,17 +16,23 @@ import org.springframework.web.server.ResponseStatusException;
 import com.finance.backend.core.usecases.UserRepositoryPort;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/transactions")
 public class TransactionController {
 
     private final CreateTransactionUseCase createTransactionUseCase;
+    private final FetchTransactionsUseCase fetchTransactionsUseCase;
+    private final GetTransactionSummaryUseCase getTransactionSummaryUseCase;
     private final UserRepositoryPort userRepository;
 
-    public TransactionController(CreateTransactionUseCase createTransactionUseCase, UserRepositoryPort userRepository) {
+    public TransactionController(CreateTransactionUseCase createTransactionUseCase, FetchTransactionsUseCase fetchTransactionsUseCase, GetTransactionSummaryUseCase getTransactionSummaryUseCase, UserRepositoryPort userRepository) {
         this.createTransactionUseCase = createTransactionUseCase;
+        this.fetchTransactionsUseCase = fetchTransactionsUseCase;
+        this.getTransactionSummaryUseCase = getTransactionSummaryUseCase;
         this.userRepository = userRepository;
     }
 
@@ -53,26 +61,24 @@ public class TransactionController {
 
     @GetMapping("/summary")
     public ResponseEntity<TransactionSummaryDto> getSummary(@AuthenticationPrincipal Object principal) {
-        // 1. Obtenha o UUID correto do usuário (tratando o problema do email)
         String email = principal.toString();
         UUID userId = userRepository.findIdByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 
-        TransactionSummaryDto summary = new TransactionSummaryDto(
-                java.math.BigDecimal.ZERO,
-                java.math.BigDecimal.ZERO,
-                java.math.BigDecimal.ZERO
-        );
-
+        TransactionSummaryDto summary = getTransactionSummaryUseCase.execute(userId);
         return ResponseEntity.ok(summary);
     }
 
     @GetMapping
-    public ResponseEntity<java.util.List<TransactionResponseDto>> listAll(@AuthenticationPrincipal Object principal) {
+    public ResponseEntity<List<TransactionResponseDto>> listAll(@AuthenticationPrincipal Object principal) {
         String email = principal.toString();
         UUID userId = userRepository.findIdByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 
-        return ResponseEntity.ok(java.util.Collections.emptyList());
+        List<TransactionResponseDto> list = fetchTransactionsUseCase.execute(userId).stream()
+                .map(TransactionResponseDto::fromDomain)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(list);
     }
 }
