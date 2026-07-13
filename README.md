@@ -51,7 +51,7 @@ Certifique-se de ter o Node.js, Java 21 (JDK) e o Docker instalados na máquina 
 
 1. Clone o repositório completo
    ```bash
-   git clone https://github.com/seu-usuario/finance-ecosystem.git
+   git clone https://github.com/willianferreirafg/finance-ecosystem
    cd finance-ecosystem
 
 2. Suba apenas os bancos de dados em segundo plano
