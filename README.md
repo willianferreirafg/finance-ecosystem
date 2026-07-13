@@ -2,7 +2,7 @@
 
 O Finance Ecosystem é uma plataforma completa e robusta de gerenciamento e controle financeiro pessoal. O ecossistema foi projetado sob os princípios distribuídos e modernos de Clean Architecture, integrando uma API REST em Spring Boot altamente segura, um banco de dados relacional isolado, um sistema de cache em memória para performance e um painel web SPA responsivo em React servido via Nginx.
 
-Opera de forma híbrida como aplicação **Web** e **Desktop**.
+Opera de forma híbrida como aplicação **Web** e **Desktop**. Isto é, temos a mesma aplicação que roda tanto na web quanto no desktop, através do Electron.
 
 ---
 
@@ -22,6 +22,7 @@ Opera de forma híbrida como aplicação **Web** e **Desktop**.
 - **PostgreSQL 16:** Banco de dados relacional de produção para persistência segura e integridade dos dados financeiros.
 - **Redis 7:** Camada de cache em memória de altíssima velocidade para otimização de consultas pesadas e relatórios.
 - **Docker & Docker Compose:** Containerização completa e orquestração de toda a infraestrutura de microsserviços.
+- **Electron:** Criação da versão desktop da aplicação, basicamente replicando aquilo que existe na web.
 
 ---
 
@@ -65,12 +66,18 @@ Certifique-se de ter o Node.js, Java 21 (JDK) e o Docker instalados na máquina 
    cd finance-backend
    ./mvnw spring-boot:run
 
-4. Inicie o Frontend
+4. Inicie o Frontend (versão web)
    - Em uma nova janela de terminal, navegue até a pasta do frontend e inicie o servidor do Vite:
    ```bash
    cd finance-frontend
    npm install
-   npm run dev
+   npm run dev:web
+
+5. Inicie o Electron (versão desktop)
+   - Para iniciar a aplicação desktop, navegue até a pasta do frontend (igual no passo anterior) e rode:
+   ```bash
+   cd finance-frontend
+   npm run dev:desktop
 
 ### Opção 2: Via Docker Compose (Orquestração de Produção)
 
@@ -78,12 +85,22 @@ Para rodar todo o ecossistema de forma isolada, limpa e idêntica ao servidor de
 
 O ecossistema é inicializado sob um controle rígido de dependências: o banco PostgreSQL inicia primeiro, valida sua própria saúde estrutural (healthcheck) e só então libera o início do servidor Spring Boot, evitando falhas de inicialização por falha de conexão.
 
-1. Certifique-se de que o seu arquivo .env está configurado corretamente na raiz do projeto.
-2. Execute o comando de construção e inicialização total:
+1. Clone o repositório completo
+   ```bash
+   git clone https://github.com/willianferreirafg/finance-ecosystem
+   cd finance-ecosystem
+
+2. Certifique-se de que o seu arquivo .env está configurado corretamente na raiz do projeto. Exemplo abaixo:
+   ```bash
+   DB_NAME=nome_do_db
+   DB_USER=nome_usuario_db
+   DB_PASSWORD=senha_usuario_db
+   
+3. Execute o comando de construção e inicialização total:
    ```bash
    docker-compose up --build
 
-3. O Docker irá orquestrar os containers nas seguintes portas locais:
+4. O Docker irá orquestrar os containers nas seguintes portas locais:
    - Frontend Web: **`http://localhost`** (Porta 80 padrão)
    - Backend API: **`http://localhost:8080`**
    - PostgreSQL: **`localhost:5432`**
