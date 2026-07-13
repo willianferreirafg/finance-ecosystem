@@ -30,19 +30,17 @@ public class RegisterUserUseCaseImpl implements RegisterUserUseCase {
         // passamos null no ID porque quem manda na geração do identificador de persistência é o banco
         User newUser = new User(null, name, email, hashedPassword, LocalDateTime.now());
 
-        userRepository.save(newUser);
-
         // Captura o usuário com o UUID real populado pelo banco de dados
         User savedUser = userRepository.save(newUser);
 
         // Cria as categorias padrão de finanças pessoais atreladas a este usuário
         List<Category> defaultCategories = List.of(
-                Category.builder().name("Alimentação").icon("utensils").color("#EF4444").user(savedUser).build(),
-                Category.builder().name("Moradia").icon("home").color("#3B82F6").user(savedUser).build(),
-                Category.builder().name("Transporte").icon("car").color("#F59E0B").user(savedUser).build(),
-                Category.builder().name("Lazer").icon("party-popper").color("#10B981").user(savedUser).build(),
-                Category.builder().name("Salário").icon("wallet").color("#22C55E").user(savedUser).build(),
-                Category.builder().name("Investimentos").icon("trending-up").color("#8B5CF6").user(savedUser).build()
+                Category.builder().name("Alimentação").icon("🍽️").color("#EF4444").user(savedUser).build(),
+                Category.builder().name("Moradia").icon("🏠").color("#3B82F6").user(savedUser).build(),
+                Category.builder().name("Transporte").icon("🚗").color("#F59E0B").user(savedUser).build(),
+                Category.builder().name("Lazer").icon("🎉").color("#10B981").user(savedUser).build(),
+                Category.builder().name("Salário").icon("💰").color("#22C55E").user(savedUser).build(),
+                Category.builder().name("Investimentos").icon("📈").user(savedUser).build()
         );
 
         categoryRepository.saveAll(defaultCategories);

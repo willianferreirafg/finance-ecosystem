@@ -3,6 +3,7 @@ package com.finance.backend.infrastructure.entrypoints.api.exceptions;
 import com.finance.backend.core.domain.exceptions.EmailAlreadyExistsException;
 import com.finance.backend.core.domain.exceptions.InvalidCredentialsException;
 import com.finance.backend.core.domain.exceptions.InvalidTokenException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -52,7 +53,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(com.finance.backend.core.domain.exceptions.ResourceNotFoundException.class)
+    @ExceptionHandler
     public ResponseEntity<Object> handleResourceNotFoundException(com.finance.backend.core.domain.exceptions.ResourceNotFoundException ex) {
         var body = java.util.Map.of(
                 "timestamp", java.time.LocalDateTime.now(),
@@ -61,5 +62,17 @@ public class GlobalExceptionHandler {
                 "message", ex.getMessage()
         );
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrity(DataIntegrityViolationException ex) {
+
+        var error = new ErrorResponse(
+                "E-mail já cadastrado.",
+                HttpStatus.CONFLICT.value(),
+                Instant.now()
+        );
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 }

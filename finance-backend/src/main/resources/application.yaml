@@ -13,9 +13,9 @@ spring:
         cache-null-values: false
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/finance_db
-    username: finance_admin
-    password: super_secret_password
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:finance_db}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -31,6 +31,4 @@ server:
 
 logging:
   level:
-    org:
-      springframework:
-        security=DEBUG:
+    org.springframework.security: DEBUG

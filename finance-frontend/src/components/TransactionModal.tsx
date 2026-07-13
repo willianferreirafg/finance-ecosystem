@@ -97,8 +97,8 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                         </button>
                         <button
                             type="button"
-                            onClick={() => setType('REVENUE')}
-                            className={`py-2 text-sm font-medium rounded-lg transition-all cursor-pointer ${type === 'REVENUE'
+                            onClick={() => setType('EXPENSE')}
+                            className={`py-2 text-sm font-medium rounded-lg transition-all cursor-pointer ${type === 'EXPENSE'
                                     ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
                                     : 'text-zinc-400 hover:text-zinc-200'
                                 }`}

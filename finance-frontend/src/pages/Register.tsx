@@ -32,7 +32,7 @@ export const Register: React.FC = () => {
       // Executa o cadastro chamando o AuthContext
       await signUp({ name, email, password });
 
-      // Se der certo, envia o usuário para a tela de login com uma sinalização amigável se quiser
+      // Se der certo, envia o usuário para a tela de login
       navigate('/login');
     } catch (error: any) {
       const errorMessage = error.message || 'Falha ao realizar cadastro. Tente novamente.';
